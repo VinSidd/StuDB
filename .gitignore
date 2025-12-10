@@ -1,0 +1,14 @@
+# Python Caching and temporary files
+__pycache__/
+*.pyc
+
+# Environment variables or credential files
+# The file containing the student system code with credentials
+your_project_file_name.py 
+
+# You should consider externalizing credentials (e.g., into a .env file)
+# and ignoring the .env file instead of the main script.
+.env 
+
+# Operating System files
+.DS_Store 
