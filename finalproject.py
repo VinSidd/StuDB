@@ -3,7 +3,7 @@ import mysql.connector
 
 DB_HOST = "localhost"
 DB_USER = "root"  
-DB_PASSWORD = "521977" 
+DB_PASSWORD = "5219772322" 
 DATABASE_NAME = "university"
 TABLE_NAME = "student"
 
