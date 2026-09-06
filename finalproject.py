@@ -1,10 +1,12 @@
 import mysql.connector
 
 
-DB_HOST = "localhost"
-DB_USER = "root"  
-DB_PASSWORD = "5219772322" 
-DATABASE_NAME = "university"
+import os
+
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_USER = os.getenv("DB_USER", "root")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "")
+DATABASE_NAME = os.getenv("DB_NAME", "university")
 TABLE_NAME = "student"
 
 student_name = ''
