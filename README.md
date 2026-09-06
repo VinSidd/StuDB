@@ -48,17 +48,6 @@ Make sure you have the following installed on your machine before running the ap
 Before launching the application, configure your MySQL database credentials. Currently, these settings are located at the top of `finalproject.py`:
 
 ```python
-DB_HOST = "localhost"        # MySQL Hostname or IP address
-DB_USER = "root"             # Database administrative or application user
-DB_PASSWORD = "your_password" # Password for the DB user
-DATABASE_NAME = "university" # Target database name
-TABLE_NAME = "student"       # Target table name
-```
-
-### Best Practice: Environment Variables
-To prevent sensitive credentials from being committed to version control, replace hardcoded values with environment variables:
-
-```python
 import os
 
 DB_HOST = os.getenv("DB_HOST", "localhost")
