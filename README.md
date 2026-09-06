@@ -113,56 +113,6 @@ CREATE TABLE IF NOT EXISTS student (
 
 ---
 
-## Security & Architectural Notes
-
-### 1. Plaintext Password Vulnerability
-- **Current Implementation**: Passwords are saved, retrieved, and matched directly as plaintext strings.
-- **Risk**: Any database compromise, unauthorized export, or debug print directly exposes credentials.
-- **Remediation**: Use a salted cryptographic hashing library such as `bcrypt` or `argon2`:
-  ```python
-  import bcrypt
-
-  # On Registration:
-  hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-  # On Login Verification:
-  if bcrypt.checkpw(input_password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
-      # Password matched
-  ```
-
-### 2. Secrets Management & Repository Safety
-- **Issue**: Database connection details (host, username, password) are hardcoded in source code.
-- **Remediation**: Store credentials in a `.env` file (and add `.env` to `.gitignore`), loading them via `python-dotenv` or native environment variables.
-
-### 3. Circular Dependency & Call Stack Growth
-- **Issue**: `finalproject.py` calls `quizz.take_quiz()`, and inside `quizz.take_quiz()`, it re-imports `finalproject` and calls `finalproject.home()`.
-- **Architectural Risk**: Recursive invocation leads to unbounded recursion frames on the Python call stack, potentially causing `RecursionError` on repeated quizzes.
-- **Remediation**: Allow `quizz.take_quiz()` to return control back to the caller instead of re-invoking `home()`:
-  ```python
-  # In finalproject.py:
-  elif choice == '3':
-      start_quiz()  # quiz finishes, returns cleanly, loop continues
-  ```
-
-### 4. Primary Key & Identity Constraints
-- **Issue**: Using `name VARCHAR(255)` as the primary key prevents two students with the same name from registering, even if their enrollment numbers and emails differ.
-- **Remediation**: Use an auto-incrementing integer `id INT AUTO_INCREMENT PRIMARY KEY` or designate `enroll` as the primary key.
-
-### 5. Quiz Logic Evaluation Quirk
-- **Issue in `quizz.py`**:
-  ```python
-  "Who was the first President of India?": "Dr. Rajendra Prasad" or "Rajendra Prasad"
-  ```
-  In Python, string evaluation `"A" or "B"` evaluates immediately to the first truthy value (`"A"`). The second option `"Rajendra Prasad"` is never checked.
-- **Remediation**: Store valid answers in a `list` or `set` and verify membership:
-  ```python
-  accepted_answers = {"dr. rajendra prasad", "rajendra prasad"}
-  if user_answer.strip().lower() in accepted_answers:
-      # Correct
-  ```
-
----
-
 ## Project Structure
 
 Ensure both Python files reside in the same root directory:
